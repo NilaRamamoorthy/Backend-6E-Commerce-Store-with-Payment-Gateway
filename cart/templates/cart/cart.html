@@ -1,31 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Your Cart</h2>
+<div class="row">
+    <!-- Cart Items Column -->
+    <div class="col-lg-8">
+        <h2 class="mb-4">Your Cart</h2>
 
-{% if cart_items %}
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in cart_items %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.qty }}</td>
-            <td>₹{{ item.subtotal }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        {% if cart_items %}
+        <div class="table-responsive shadow-sm bg-white rounded p-3">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <a href="{% url 'decrease_cart' item.product.id %}" class="btn btn-sm btn-outline-secondary me-2">-</a>
+                                <span>{{ item.qty }}</span>
+                                <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-sm btn-outline-secondary ms-2">+</a>
+                            </div>
+                        </td>
+                        <td>₹{{ item.subtotal }}</td>
+                        <td>
+                            <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-sm btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">Your cart is empty.</div>
+        {% endif %}
+    </div>
 
-<h4>Total: ₹{{ total }}</h4>
-
-{% else %}
-<p>Your cart is empty.</p>
-{% endif %}
-
+    <!-- Cart Summary Column -->
+    <div class="col-lg-4">
+        <div class="shadow-sm bg-white rounded p-4">
+            <h4 class="mb-3">Cart Summary</h4>
+            <p class="d-flex justify-content-between">
+                <span>Total Items:</span>
+                <span>{{ cart_items|length }}</span>
+            </p>
+            <p class="d-flex justify-content-between fw-bold">
+                <span>Total Amount:</span>
+                <span>₹{{ total }}</span>
+            </p>
+            {% if cart_items %}
+            <a href="{% url 'checkout' %}" class="btn btn-warning w-100 fw-bold text-dark">Proceed to Checkout</a>
+            {% else %}
+            <button class="btn btn-secondary w-100" disabled>Proceed to Checkout</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

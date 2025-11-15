@@ -135,3 +135,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = 'login'  # This should match your login URL name
+LOGIN_REDIRECT_URL = '/'  # Optional: redirect here after login
+
+# settings.py
+RAZORPAY_KEY_ID = 'YOUR_KEY_ID'
+RAZORPAY_KEY_SECRET = 'YOUR_KEY_SECRET'
